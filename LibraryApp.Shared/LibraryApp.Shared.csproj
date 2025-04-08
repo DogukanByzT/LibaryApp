@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LibaryApp.API\LibraryApp.API.csproj" />
+    <ProjectReference Include="..\LibaryApp.Application\LibraryApp.Application.csproj" />
+    <ProjectReference Include="..\LibaryApp.Infrastructure\LibraryApp.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
