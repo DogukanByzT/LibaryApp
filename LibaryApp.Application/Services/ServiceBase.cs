@@ -17,13 +17,13 @@ namespace LibraryApp.Application.Services
     {
         public readonly AppDbContext _context;
         public readonly IMapper _mapper;
-        public readonly DbSet<Entity> _DbSet;
+        public readonly DbSet<TEntity> _DbSet;
 
         public ServiceBase(AppDbContext context, IMapper mapper )
         {
             _context = context;
             _mapper = mapper;
-            _DbSet = _context.Set<Entity>();
+            _DbSet = _context.Set<TEntity>();
         }
 
         public async Task<List<TDto>> GetAllAsync()
@@ -34,6 +34,7 @@ namespace LibraryApp.Application.Services
 
         public async Task<TDto> CreateAsync(TDto dto)
         {
+           
             var entity = _mapper.Map<TEntity>(dto);
             _DbSet.Add(entity);
             await _context.SaveChangesAsync();
@@ -61,6 +62,11 @@ namespace LibraryApp.Application.Services
             _mapper.Map(dto, entity);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public Task<TDto> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
