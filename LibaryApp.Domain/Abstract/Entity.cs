@@ -8,7 +8,7 @@ namespace LibraryApp.Domain.Abstract
 {
     public class Entity
     {
-        int Id { get; set; }
+        public int Id { get; set; }
         
     }
 }

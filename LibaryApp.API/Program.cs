@@ -1,8 +1,12 @@
+using LibraryApp.Infrastructure.Context;
 using LibraryApp.Infrastructure.Mapper;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // AutoMapper servisini burada ekleyin
 builder.Services.AddAutoMapper(typeof(MappingProfile));

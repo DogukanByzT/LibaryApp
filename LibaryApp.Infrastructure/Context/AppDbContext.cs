@@ -18,9 +18,17 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Book entity için ISBN unique constraint
         modelBuilder.Entity<Book>()
             .HasIndex(b => b.ISBN)
             .IsUnique();
+
+        // Author ve Book arasındaki ilişkiyi belirt
+        modelBuilder.Entity<Author>()
+            .HasMany(a => a.Books)
+            .WithOne(b => b.Author)  // Book sınıfında Author'a referans olduğunu varsayıyoruz
+            .HasForeignKey(b => b.AuthorId); // Foreign Key, AuthorId olmalı
     }
+
 
 }
