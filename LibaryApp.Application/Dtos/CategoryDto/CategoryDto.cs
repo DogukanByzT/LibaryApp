@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LibraryApp.Application.Dtos
+namespace LibraryApp.Application.Dtos.CategoryDto
 {
     public class CategoryDto
     {

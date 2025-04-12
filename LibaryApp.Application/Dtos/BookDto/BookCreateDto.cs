@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LibraryApp.Application.Dtos
+namespace LibraryApp.Application.Dtos.BookDto
 {
-    public class BookDto
+    public class BookCreateDto
     {
         public string? ISBN { get; set; }
         public string? Name { get; set; }
@@ -16,5 +16,9 @@ namespace LibraryApp.Application.Dtos
         public string? ImageUrl { get; set; }
         public DateTime PublishDate { get; set; }
         public bool IsPresent { get; set; }
+
+        public int AuthorId { get; set; }
+        public int CategoryId { get; set; }
     }
+
 }

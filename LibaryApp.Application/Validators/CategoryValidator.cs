@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using LibraryApp.Application.Dtos;
+using LibraryApp.Application.Dtos.CategoryDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;

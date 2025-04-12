@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LibraryApp.Application.Dtos
+namespace LibraryApp.Application.Dtos.AuthorDto
 {
-    public class AuthorDto
+    public class CreateAuthorDto
     {
         public string? Name { get; set; }
         public string? Surname { get; set; }
         public DateTime BirthDate { get; set; }
         public string? ImageUrl { get; set; }
     }
+
 }

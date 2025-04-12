@@ -1,5 +1,8 @@
-﻿using LibraryApp.Infrastructure.Context;
+﻿using AutoMapper;
+using LibraryApp.Application.Dtos;
+using LibraryApp.Application.Dtos.CategoryDto;
 using LibraryApp.Domain.Entities;
+using LibraryApp.Infrastructure.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,92 +13,64 @@ namespace LibraryApp.API.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CategoryController(AppDbContext context)
+        public CategoryController(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        // GET: api/category
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            var categories = await _context.Categories.ToListAsync();
+            return Ok(_mapper.Map<List<CategoryDto>>(categories));
         }
 
-        // GET: api/category/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<CategoryDto>> GetCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);
+            if (category == null) return NotFound();
 
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return category;
+            return Ok(_mapper.Map<CategoryDto>(category));
         }
 
-        // POST: api/category
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto dto)
         {
+            var category = _mapper.Map<Category>(dto);
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
+            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, _mapper.Map<CategoryDto>(category));
         }
 
-        // PUT: api/category/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDto dto)
         {
-            if (id != category.Id)
-            {
-                return BadRequest();
-            }
+            if (id != dto.Id) return BadRequest();
 
-            _context.Entry(category).State = EntityState.Modified;
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null) return NotFound();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _mapper.Map(dto, category);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        // DELETE: api/category/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
+            if (category == null) return NotFound();
 
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool CategoryExists(int id)
-        {
-            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }
